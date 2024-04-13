@@ -1,9 +1,9 @@
-# Amadou:
+# Amadou
 ##   Models
 *    amenity
 *    place
 *    state
-# Antoine:
+# Antoine
 ##   Models
 *    City 
 *    review
