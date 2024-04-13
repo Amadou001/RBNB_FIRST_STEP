@@ -1,10 +1,10 @@
 # Amadou:
-*    Models
+##   Models
 *    amenity
 *    place
 *    state
 # Antoine:
-*    Models
+##   Models
 *    City 
 *    review
 *    user
