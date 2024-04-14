@@ -3,8 +3,10 @@
 Base model module
 """
 
+
 import uuid
-import datetime
+from datetime import datetime
+
 
 class BaseModel:
     """
@@ -15,13 +17,30 @@ class BaseModel:
             updated_at (date): current datetime when an instance is created
                      and it will be updated every time you change your object
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs): 
         """
         Constructor
+
+            Args:
+                args: (unused):
+                kwargs (dictionary): only the "__class__" key will not
+                        be added as attribute of the object
         """
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        if kwargs is not None:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
+                elif key == "created_at":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    setattr(self, key, value)
+                elif key == "updated_at":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    setattr(self, key, value)
+
+                setattr(self, key, value)
 
     def __str__(self):
         """
@@ -34,7 +53,7 @@ class BaseModel:
         """
         updates the public instance attribute updated_at with the current datetime
         """
-        current_time = datetime.datetime.now()
+        current_time = datetime.now()
         self.updated_at = current_time.isoformat()
         self.created_at = self.created_at.isoformat()
     
@@ -42,9 +61,11 @@ class BaseModel:
         """
         returns a dictionary containing all keys/values of __dict__ of the instance
         """
+        self.created_at = self.created_at.isoformat()
+        self.updated_at = self.updated_at.isoformat()
         diction = self.__dict__
         object_class = type(self)
         diction2 = {'__class__': f'{object_class.__name__}'}
         diction.update(diction2)
+
         return diction
-    
