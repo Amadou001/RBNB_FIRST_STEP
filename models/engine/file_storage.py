@@ -29,17 +29,18 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """save: Method to save an object to a private class attribure __objects
+        """
+        save: Method to save an object to
+        a private class attribure __objects
         """
         all_objects = self.__objects
         dict_objects = {}
         for obj in all_objects.keys():
             dict_objects[obj] = all_objects[obj].to_dict()
-        
+
         with open(self.__file_path, "w") as file:
             json.dump(dict_objects, file)
 
-        
     def reload(self):
         """
             reload: method to deserialise an object from an existing file
@@ -54,6 +55,6 @@ class FileStorage:
                         cls = eval(class_name)
                         class_instance = cls(**value)
                         self.__objects[key] = class_instance
-            
+
             except Exception:
                 pass
