@@ -3,8 +3,10 @@
 Base model module
 """
 
+
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -22,12 +24,12 @@ class BaseModel:
 
             Args:
                 args: (unused):
-                kwargs (dictionary): only the "__class__" key will not
+                kwargs (dictionary): only the "class" key will not
                         be added as attribute of the object
         """
         if kwargs:
             for key, value in kwargs.items():
-                if key == "__class__":
+                if key == "class":
                     continue
                 elif key == "created_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -35,38 +37,38 @@ class BaseModel:
                 elif key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                     setattr(self, key, value)
-
-                setattr(self, key, value)
+                else:
+                    setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            
+            models.storage.new(self)
+
     def __str__(self):
         """
         Returns the string representation of the object
         """
         object_class = type(self)
-        return "[{}] ({}) ({})".format(object_class.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(object_class.__name__, self.id, self.__dict__)
+        
     
     def save(self):
         """
         updates the public instance attribute updated_at with the current datetime
         """
-
         current_time = datetime.now()
-        self.updated_at = current_time.isoformat()
-        self.created_at = self.created_at.isoformat()
-
+        self.updated_at = current_time
+        models.storage.save()
     
     def to_dict(self):
         """
-        returns a dictionary containing all keys/values of __dict__ of the instance
+        returns a dictionary containing all keys/values of dict of the instance
         """
         self.created_at = self.created_at.isoformat()
         self.updated_at = self.updated_at.isoformat()
-        diction = self.__dict__.copy()
+        diction = self.__dict__
         object_class = type(self)
-        diction2 = {'__class__': f'{object_class.__name__}'}
+        diction2 = {'class': f'{object_class.__name__}'}
         diction.update(diction2)
         return diction
