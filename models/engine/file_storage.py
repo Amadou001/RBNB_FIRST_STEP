@@ -5,6 +5,8 @@ file_storage module
 import json
 import os.path
 from models.base_model import BaseModel
+from datetime import datetime
+import copy
 
 
 class FileStorage:
@@ -33,13 +35,17 @@ class FileStorage:
         save: Method to save an object to
         a private class attribure __objects
         """
-        all_objects = self.__objects
-        dict_objects = {}
-        for obj in all_objects.keys():
-            dict_objects[obj] = all_objects[obj].to_dict()
-
+        all_objects = copy.deepcopy(self.__objects)
+        for obj_id in all_objects.keys():
+            all_objects[obj_id] = all_objects[obj_id].__dict__
+        for key, value in all_objects.items():
+            for key1, value1 in value.items():
+                if type(value1) == datetime:
+                    new_value = copy.deepcopy(value1)
+                    f_value = new_value.isoformat()
+                    all_objects[key][key1] = f_value
         with open(self.__file_path, "w") as file:
-            json.dump(dict_objects, file)
+            json.dump(all_objects, file)
 
     def reload(self):
         """
