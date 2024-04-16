@@ -29,15 +29,14 @@ class BaseModel:
         """
         if kwargs:
             for key, value in kwargs.items():
-                if key == "class":
-                    continue
-                elif key == "created_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                    setattr(self, key, value)
-                elif key == "updated_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                    setattr(self, key, value)
-                else:
+                if key != "__class__":
+                    
+                    if key == "created_at":
+                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        setattr(self, key, value)
+                    elif key == "updated_at":
+                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        setattr(self, key, value)
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
@@ -65,10 +64,11 @@ class BaseModel:
         """
         returns a dictionary containing all keys/values of dict of the instance
         """
-        self.created_at = self.created_at.isoformat()
-        self.updated_at = self.updated_at.isoformat()
+        if isinstance(self.created_at, datetime) and isinstance(self.updated_at, datetime):
+            self.created_at = self.created_at.isoformat()
+            self.updated_at = self.updated_at.isoformat()
         diction = self.__dict__
         object_class = type(self)
-        diction2 = {'class': f'{object_class.__name__}'}
+        diction2 = {'__class__': f'{object_class.__name__}'}
         diction.update(diction2)
         return diction
