@@ -37,7 +37,7 @@ class FileStorage:
         """
         all_objects = copy.deepcopy(self.__objects)
         for obj_id in all_objects.keys():
-            all_objects[obj_id] = all_objects[obj_id].__dict__
+            all_objects[obj_id] = all_objects[obj_id].to_dict()
         for key, value in all_objects.items():
             for key1, value1 in value.items():
                 if type(value1) == datetime:
