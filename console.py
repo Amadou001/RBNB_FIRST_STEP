@@ -12,7 +12,7 @@ class BNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_create(self, args):
-        """Create an instance of of a class then save it to json file"""
+        """Create an instance of a class then save it to json file"""
         if args:
             if args == "BaseModel":
                 my_model = BaseModel()
@@ -22,10 +22,181 @@ class BNBCommand(cmd.Cmd):
                 print("** class doesn't exist")
         else:
             print("** class name missing **")
+
+    def do_show(self, args):
+        """show instance base on id and class name"""
+        all_objects = storage.all()
+        arguments = args.split()
+        if len(arguments) == 0:
+            print("** class name missing **")
+            return
+
+        if len(arguments) < 2:
+            print("** instance id missing ** ")
+            return
+
+        all_class_name = []
+        all_obj_keys = []
+        availlable_class = ["BaseModel"]
+        
+        for obj_key in all_objects.keys():
+            class_name, obj_id = obj_key.split('.')
+            all_class_name.append(class_name)
+            all_obj_keys.append(obj_key)
+        
+            if class_name == arguments[0] and obj_id == arguments[1]:
+                print(all_objects[obj_key])
+                return
+        
+        if arguments[0] not in all_class_name and arguments[0] not in availlable_class:
+            print("** class doesn't exist **")
+        
+        elif arguments[1] not in all_obj_keys:
+            print("** no instance found **")
+        
+    def do_destroy(self, args):
+        """Deletes an instance based on the class name and id"""
+        all_objects = storage.all()
+        arguments = args.split()
+        if len(arguments) == 0:
+            print("** class name missing **")
+            return
+
+        if len(arguments) < 2:
+            print("** instance id missing ** ")
+            return
+
+        all_class_name = []
+        all_obj_keys = []
+        availlable_class = ["BaseModel"]
+        
+        try:
+            for obj_key in all_objects.keys():
+                class_name, obj_id = obj_key.split('.')
+                all_class_name.append(class_name)
+                all_obj_keys.append(obj_key)
+            
+                if class_name == arguments[0] and obj_id == arguments[1]:
+                    del all_objects[obj_key]
+                storage.save()
+
+        except RuntimeError:
+            return
+        
+        if arguments[0] not in all_class_name and arguments[0] not in availlable_class:
+            print("** class doesn't exist **")
+        
+        elif arguments[1] not in all_obj_keys:
+            print("** no instance found **")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def do_update(self, args):
+        """update an instance base class name and id"""
+        all_objects = storage.all()
+        arguments = args.split()
+        if len(arguments) == 0:
+            print("** class name missing **")
+            return
+
+        if len(arguments) < 2:
+            print("** instance id missing ** ")
+            return
+
+        if len(arguments) < 3:
+            print("** attribute name missing ** ")
+            return
     
+        if len(arguments) < 4:
+            print("** value missing **")
+            return
+
+        all_class_name = []
+        #all_obj_keys = []
+        
+        try:
+            for obj_key in all_objects.keys():
+                class_name, obj_id = obj_key.split('.')
+                all_class_name.append(class_name)
+            
+            
+                if class_name == arguments[0] and obj_id == arguments[1]:
+                    setattr(all_objects[obj_key], arguments[2], arguments[3])
+                storage.save()
+
+                if class_name == arguments[0] and obj_id != arguments[1]:
+                    print("** no instance found **")
+
+        except RuntimeError:
+            return
+        
+        if arguments[0] not in all_class_name:
+            print("** class doesn't exist **")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
-        if args and args != "BaseModel":
+        arguments = args.split()
+        if len(arguments) != 0 and arguments[0] != "BaseModel":
             print("** class doesn't exist **")
             return
 
