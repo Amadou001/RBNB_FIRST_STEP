@@ -25,6 +25,10 @@ class BNBCommand(cmd.Cmd):
     
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
+        if args and args != "BaseModel":
+            print("** class doesn't exist **")
+            return
+
         all_obj = storage.all()
         list_object = []
         for obj_id in all_obj.keys():
