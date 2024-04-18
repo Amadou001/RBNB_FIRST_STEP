@@ -131,42 +131,6 @@ class BNBCommand(cmd.Cmd):
         if arguments[0] not in all_class_name:
             print("** class doesn't exist **")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
         arguments = args.split()
