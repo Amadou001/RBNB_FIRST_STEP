@@ -36,16 +36,16 @@ class BNBCommand(cmd.Cmd):
             return
 
         all_class_name = []
-        class_dict = {}
+        my_id_dict = {}
                 
         for obj_key in all_objects.keys():
             class_name, obj_id = obj_key.split('.')
             all_class_name.append(class_name)
             
-            if class_name in class_dict.keys():
-                class_dict[class_name].append(obj_id)
+            if class_name in my_id_dict.keys():
+                my_id_dict[class_name].append(obj_id)
             else:
-                class_dict[class_name] = [obj_id]
+                my_id_dict[class_name] = [obj_id]
 
             if class_name == arguments[0] and obj_id == arguments[1]:
                 print(all_objects[obj_key])
@@ -55,11 +55,10 @@ class BNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         
-        if arguments[0] in all_class_name:
-            class_name_value = class_dict[arguments[0]]
-            if arguments[1] not in class_name_value:
-                print("** no instance found **")
-                return
+        
+        if arguments[1] not in my_id_dict[arguments[0]]:
+            print("** no instance found **")
+            return
 
         
     def do_destroy(self, args):
@@ -75,7 +74,7 @@ class BNBCommand(cmd.Cmd):
             return
 
         all_class_name = []
-        class_dict = {}
+        my_id_dict = {}
         
         
         try:
@@ -83,10 +82,10 @@ class BNBCommand(cmd.Cmd):
                 class_name, obj_id = obj_key.split('.')
                 all_class_name.append(class_name)
                 
-                if class_name in class_dict.keys():
-                    class_dict[class_name].append(obj_id)
+                if class_name in my_id_dict.keys():
+                    my_id_dict[class_name].append(obj_id)
                 else:
-                    class_dict[class_name] = [obj_id]
+                    my_id_dict[class_name] = [obj_id]
             
                 if class_name == arguments[0] and obj_id == arguments[1]:
                     del all_objects[obj_key]
@@ -98,11 +97,9 @@ class BNBCommand(cmd.Cmd):
         if arguments[0] not in all_class_name:
             print("** class doesn't exist **")
 
-        if arguments[0] in all_class_name:
-            class_name_value = class_dict[arguments[0]]
-            if arguments[1] not in class_name_value:
-                print("** no instance found **")
-                return
+        if arguments[1] not in my_id_dict[arguments[0]]:
+            print("** no instance found **")
+            return
 
 
     def do_update(self, args):
@@ -126,40 +123,62 @@ class BNBCommand(cmd.Cmd):
             return
 
         all_class_name = []
-        #all_obj_keys = []
+        my_id_dict = {}
         
         try:
             for obj_key in all_objects.keys():
                 class_name, obj_id = obj_key.split('.')
                 all_class_name.append(class_name)
-            
+                
+                if class_name in my_id_dict.keys():
+                    my_id_dict[class_name].append(obj_id)
+                else:
+                    my_id_dict[class_name] = [obj_id]
             
                 if class_name == arguments[0] and obj_id == arguments[1]:
                     setattr(all_objects[obj_key], arguments[2], arguments[3])
                 storage.save()
-
-                if class_name == arguments[0] and obj_id != arguments[1]:
-                    print("** no instance found **")
-
         except RuntimeError:
             return
-        
+
         if arguments[0] not in all_class_name:
             print("** class doesn't exist **")
+
+        if arguments[1] not in my_id_dict[arguments[0]]:
+            print("** no instance found **")
+            return
+            
 
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
         arguments = args.split()
-        if len(arguments) != 0 and arguments[0] != "BaseModel":
-            print("** class doesn't exist **")
-            return
-
         all_obj = storage.all()
-        list_object = []
-        for obj_id in all_obj.keys():
-            obj = all_obj[obj_id]
-            list_object.append(str(obj))
-        print(list_object)
+        all_class_name = []
+
+        for obj_key in all_obj.keys():
+            class_name, obj_id = obj_key.split('.')
+            all_class_name.append(class_name)
+
+        if args:
+            if arguments[0] not in all_class_name:
+                print("** class doesn't exist **")
+                return
+            
+            list_object = []
+            for obj_id in all_obj.keys():
+                cls_name, o_id = obj_key.split('.')
+                if arguments[0] == cls_name:
+                    obj = all_obj[obj_id]
+                    list_object.append(str(obj))
+            print(list_object)
+        
+        else:
+            list_object = []
+            for obj_id in all_obj.keys():
+                obj = all_obj[obj_id]
+                list_object.append(str(obj))
+            print(list_object)
+
 
     def do_quit(self, line):
         """Quit command to exit the program"""
