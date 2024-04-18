@@ -182,6 +182,8 @@ class BNBCommand(cmd.Cmd):
                 list_object.append(str(obj))
             print(list_object)
 
+    def default(self, line):
+        print("Not implemented yet")
 
     def do_quit(self, line):
         """Quit command to exit the program"""
