@@ -89,32 +89,6 @@ class BNBCommand(cmd.Cmd):
         elif arguments[1] not in all_obj_keys:
             print("** no instance found **")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def do_update(self, args):
         """update an instance base class name and id"""
         all_objects = storage.all()
