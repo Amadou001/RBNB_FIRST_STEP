@@ -7,6 +7,7 @@ import cmd
 import models
 from models.base_model import BaseModel
 from models import storage
+import os
 
 class BNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
@@ -14,10 +15,12 @@ class BNBCommand(cmd.Cmd):
     def do_create(self, args):
         """Create an instance of a class then save it to json file"""
         if args:
-            if args == "BaseModel":
-                my_model = BaseModel()
+            arguments = args.split()
+            class_name = arguments[0]
+            if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
+                my_model = globals()[arguments[0]]()
                 my_model.save()
-                print(my_model.id)
+                print(my_model.id)           
             else:
                 print("** class doesn't exist")
         else:
