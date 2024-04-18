@@ -36,23 +36,31 @@ class BNBCommand(cmd.Cmd):
             return
 
         all_class_name = []
-        all_obj_keys = []
-        availlable_class = ["BaseModel"]
-        
+        class_dict = {}
+                
         for obj_key in all_objects.keys():
             class_name, obj_id = obj_key.split('.')
             all_class_name.append(class_name)
-            all_obj_keys.append(obj_key)
-        
+            
+            if class_name in class_dict.keys():
+                class_dict[class_name].append(obj_id)
+            else:
+                class_dict[class_name] = [obj_id]
+
             if class_name == arguments[0] and obj_id == arguments[1]:
                 print(all_objects[obj_key])
                 return
         
-        if arguments[0] not in all_class_name and arguments[0] not in availlable_class:
+        if arguments[0] not in all_class_name:
             print("** class doesn't exist **")
+            return
         
-        elif arguments[1] not in all_obj_keys:
-            print("** no instance found **")
+        if arguments[0] in all_class_name:
+            class_name_value = class_dict[arguments[0]]
+            if arguments[1] not in class_name_value:
+                print("** no instance found **")
+                return
+
         
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
@@ -67,14 +75,18 @@ class BNBCommand(cmd.Cmd):
             return
 
         all_class_name = []
-        all_obj_keys = []
-        availlable_class = ["BaseModel"]
+        class_dict = {}
+        
         
         try:
             for obj_key in all_objects.keys():
                 class_name, obj_id = obj_key.split('.')
                 all_class_name.append(class_name)
-                all_obj_keys.append(obj_key)
+                
+                if class_name in class_dict.keys():
+                    class_dict[class_name].append(obj_id)
+                else:
+                    class_dict[class_name] = [obj_id]
             
                 if class_name == arguments[0] and obj_id == arguments[1]:
                     del all_objects[obj_key]
@@ -83,11 +95,15 @@ class BNBCommand(cmd.Cmd):
         except RuntimeError:
             return
         
-        if arguments[0] not in all_class_name and arguments[0] not in availlable_class:
+        if arguments[0] not in all_class_name:
             print("** class doesn't exist **")
-        
-        elif arguments[1] not in all_obj_keys:
-            print("** no instance found **")
+
+        if arguments[0] in all_class_name:
+            class_name_value = class_dict[arguments[0]]
+            if arguments[1] not in class_name_value:
+                print("** no instance found **")
+                return
+
 
     def do_update(self, args):
         """update an instance base class name and id"""
