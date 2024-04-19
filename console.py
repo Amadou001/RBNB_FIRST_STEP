@@ -6,6 +6,9 @@ console module
 import cmd
 import models
 from models.base_model import BaseModel
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
 from models import storage
 import os
 

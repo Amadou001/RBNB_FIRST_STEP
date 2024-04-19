@@ -7,6 +7,9 @@ file_storage module
 import json
 import os.path
 from models.base_model import BaseModel
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
 from datetime import datetime
 import copy
 
