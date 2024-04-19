@@ -38,12 +38,11 @@ class BNBCommand(cmd.Cmd):
             print("** instance id missing ** ")
             return
 
-        all_class_name = []
+        
         my_id_dict = {}
                 
         for obj_key in all_objects.keys():
             class_name, obj_id = obj_key.split('.')
-            all_class_name.append(class_name)
             
             if class_name in my_id_dict.keys():
                 my_id_dict[class_name].append(obj_id)
@@ -54,7 +53,7 @@ class BNBCommand(cmd.Cmd):
                 print(all_objects[obj_key])
                 return
         
-        if arguments[0] not in all_class_name:
+        if arguments[0] not in my_id_dict.keys():
             print("** class doesn't exist **")
             return
         
@@ -76,14 +75,12 @@ class BNBCommand(cmd.Cmd):
             print("** instance id missing ** ")
             return
 
-        all_class_name = []
         my_id_dict = {}
         
         
         try:
             for obj_key in all_objects.keys():
                 class_name, obj_id = obj_key.split('.')
-                all_class_name.append(class_name)
                 
                 if class_name in my_id_dict.keys():
                     my_id_dict[class_name].append(obj_id)
@@ -97,7 +94,7 @@ class BNBCommand(cmd.Cmd):
         except RuntimeError:
             return
         
-        if arguments[0] not in all_class_name:
+        if arguments[0] not in my_id_dict.keys():
             print("** class doesn't exist **")
 
         if arguments[1] not in my_id_dict[arguments[0]]:
@@ -125,13 +122,11 @@ class BNBCommand(cmd.Cmd):
             print("** value missing **")
             return
 
-        all_class_name = []
         my_id_dict = {}
         
         try:
             for obj_key in all_objects.keys():
                 class_name, obj_id = obj_key.split('.')
-                all_class_name.append(class_name)
                 
                 if class_name in my_id_dict.keys():
                     my_id_dict[class_name].append(obj_id)
@@ -144,7 +139,7 @@ class BNBCommand(cmd.Cmd):
         except RuntimeError:
             return
 
-        if arguments[0] not in all_class_name:
+        if arguments[0] not in my_id_dict.keys():
             print("** class doesn't exist **")
 
         if arguments[1] not in my_id_dict[arguments[0]]:
@@ -191,7 +186,7 @@ class BNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """Called when an empty line is entered"""
-        print(end="")
+        pass
 
     def do_EOF(self, line):
         """Handle End-of-File (EOF) condition to exit the program gracefully"""
