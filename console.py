@@ -134,7 +134,7 @@ class BNBCommand(cmd.Cmd):
                     my_id_dict[class_name] = [obj_id]
             
                 if class_name == arguments[0] and obj_id == arguments[1]:
-                    setattr(all_objects[obj_key], arguments[2], arguments[3])
+                    setattr(all_objects[obj_key], arguments[2], arguments[3].strip('"'))
                 storage.save()
         except RuntimeError:
             return
