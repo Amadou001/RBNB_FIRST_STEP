@@ -7,6 +7,7 @@ file_storage module
 import json
 import os.path
 from models.base_model import BaseModel
+from models.user import User
 from datetime import datetime
 import copy
 
