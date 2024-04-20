@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """
-Amenity module
+State module
 """
 from .base_model import BaseModel
 
 class State(BaseModel):
     """
-    Amenity class
+    State class
     """
     name = ""

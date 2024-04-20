@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """
-Amenity module
+Place module
 """
 from .base_model import BaseModel
 
 class Place(BaseModel):
     """
-    Amenity class
+    Place class
     """
     city_id = ""
     user_id = ""

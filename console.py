@@ -18,6 +18,19 @@ import os
 class BNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
+    def do_quit(self, line):
+        """Quit command to exit the program"""
+        return True
+
+    def emptyline(self):
+        """Called when an empty line is entered"""
+        pass
+
+    def do_EOF(self, line):
+        """Handle End-of-File (EOF) condition to exit the program gracefully"""
+        print()
+        return True
+
     def do_create(self, args):
         """Create an instance of a class then save it to json file"""
         if args:
@@ -155,7 +168,6 @@ class BNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
-        arguments = args.split()
         all_obj = storage.all()
         all_class_name = []
 
@@ -164,16 +176,16 @@ class BNBCommand(cmd.Cmd):
             all_class_name.append(class_name)
 
         if args:
+            arguments = args.split()
             if arguments[0] not in all_class_name:
                 print("** class doesn't exist **")
                 return
             
             list_object = []
             for obj_id in all_obj.keys():
-                cls_name, o_id = obj_key.split('.')
+                cls_name, o_id = obj_id.split(".")
                 if arguments[0] == cls_name:
-                    obj = all_obj[obj_id]
-                    list_object.append(str(obj))
+                    list_object.append(str(all_obj[obj_id]))
             print(list_object)
         
         else:
@@ -184,20 +196,39 @@ class BNBCommand(cmd.Cmd):
             print(list_object)
 
     def default(self, line):
-        print("Not implemented yet")
+        class_name, command = line.split(".")
+        if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
+            if command == "all()":
+                self.onecmd(f'all {class_name}')
+            elif command == "count()":
+                all_obj = storage.all()
+                counter = 0
+                for key in all_obj.keys():
+                    cls_name, obj_id = key.split(".")
+                    if class_name == cls_name:
+                        counter += 1
+                print(counter)
+            elif command[:4] == "show":
 
-    def do_quit(self, line):
-        """Quit command to exit the program"""
-        return True
+                try:
+                    garbage1, ob_id, garbage2 = line.split('"')
+                    self.onecmd(f'show {class_name} {ob_id}')
+                except:
+                    pass
 
-    def emptyline(self):
-        """Called when an empty line is entered"""
-        pass
+            elif command[:7] == "destroy":
 
-    def do_EOF(self, line):
-        """Handle End-of-File (EOF) condition to exit the program gracefully"""
-        print()
-        return True
+                try:
+                    garbage1, ob_id, garbage2 = line.split('"')
+                    self.onecmd(f'destroy {class_name} {ob_id}')
+                except:
+                    pass
+
+            else:
+                print("** Not implemented yet **")
+        else:
+            print("** Class name does not exist **")
+
 
 
 if __name__ == '__main__':
