@@ -56,8 +56,15 @@ class TestBaseModel(unittest.TestCase):
         expected_output = f"[{my_model.__class__.__name__}] ({my_model.id}) {my_model.__dict__}"
         self.assertEqual(str(my_model), expected_output)
 
-    def test_str_repr_with_argument(self):
-        """Test str with argument"""
+    def test_str_representation_with_arguments(self):
+        """Test str representation while providing arguments"""
+        my_model = BaseModel()
+        my_model.my_list = [1, 2, 4]
+        expected_output = f"[{my_model.__class__.__name__}] ({my_model.id}) {my_model.__dict__}"
+        self.assertEqual(str(my_model), expected_output)
+    
+    def test_base_model_with_argument(self):
+        """Test basemodel with argument when trying to access class attributes"""
         with self.assertRaises(AttributeError):
             my_model = BaseModel(name = "Antoine", age = 55)
             uuid_obj = uuid.UUID(my_model.id)
