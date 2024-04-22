@@ -8,4 +8,4 @@ class Amenity(BaseModel):
     """
     Amenity class
     """
-    name = ""
+    name : str = ""

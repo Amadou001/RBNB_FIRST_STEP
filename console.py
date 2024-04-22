@@ -153,8 +153,14 @@ class BNBCommand(cmd.Cmd):
                     my_id_dict[class_name] = [obj_id]
             
                 if class_name == arguments[0] and obj_id == arguments[1]:
-                    setattr(all_objects[obj_key], arguments[2], arguments[3].strip('"'))
-                storage.save()
+                    #print(eval(arguments[3].strip('"')))
+                    try:
+                        if type(eval(arguments[3].strip('"'))) in [int, float]:
+                            #print(eval(arguments[3].strip('"')))
+                            setattr(all_objects[obj_key], arguments[2], eval(arguments[3].strip('"')))
+                    except:
+                        setattr(all_objects[obj_key], arguments[2], arguments[3].strip('"'))
+                    storage.save()
         except RuntimeError:
             return
 
@@ -221,6 +227,26 @@ class BNBCommand(cmd.Cmd):
                 try:
                     garbage1, ob_id, garbage2 = line.split('"')
                     self.onecmd(f'destroy {class_name} {ob_id}')
+                except:
+                    pass
+            
+            elif command[:6] == "update":
+                command_split = command.split(",")
+
+                try:
+                    list_split = []
+                    list_split = command.split('"')
+                    if len(list_split) == 7:
+                        garbage1, obj_id, garbage2, attr_name, garbage3, attr_value, garbage4 = command.split('"')
+                        garbage5, garbage, garbage6 = command.split(", ")
+                        attr_value = garbage6.split(")")[0]
+                        self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
+                    else:
+                        garbage1, obj_id, garbage2, attr_name, garbage3 = command.split('"')
+                        garbage5, garbage, garbage6 = command.split(", ")
+                        attr_value = garbage6.split(")")[0]
+                        self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
+                
                 except:
                     pass
 
