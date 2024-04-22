@@ -10,6 +10,13 @@ from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
+    """Class to test basemodel module"""
+    
+    def test_create_object(self):
+        """Check wether it's possible to create an object from BaseModel class"""
+        my_new_modele = BaseModel()
+        self.assertIsInstance(my_new_modele, BaseModel)
+
     def test_model_attributes_assignment(self):
         """Test model attributes assignment"""
         my_model = BaseModel()
@@ -79,6 +86,40 @@ class TestBaseModel(unittest.TestCase):
         expected_dict.update(dictionary)
         self.assertDictEqual(my_model_dict_repr, expected_dict)
 
+    def test_to_dict_value_as_list(self):
+        my_model = BaseModel()
+        my_model.my_list = [1, 2, 3]
+        my_model.name = "First Model"
+        my_model_dict_repr = my_model.to_dict()
+        class_name = f"{my_model.__class__.__name__}"
+        dictionary = my_model.__dict__
+        expected_dict = {"__class__": class_name}
+        expected_dict.update(dictionary)
+        self.assertDictEqual(my_model_dict_repr, expected_dict)
+
+    def test_to_dict_value_as_dict(self):
+        my_model = BaseModel()
+        my_model.my_dict = {"a": 1, "b": 2, "c": 3}
+        my_model.name = "First Model"
+        my_model_dict_repr = my_model.to_dict()
+        class_name = f"{my_model.__class__.__name__}"
+        dictionary = my_model.__dict__
+        expected_dict = {"__class__": class_name}
+        expected_dict.update(dictionary)
+        self.assertDictEqual(my_model_dict_repr, expected_dict)
+
+    def test_to_dict_value_as_tuple(self):
+        my_model = BaseModel()
+        my_model.my_tuple = (1, 2, 4)
+        my_model.name = "First Model"
+        my_model_dict_repr = my_model.to_dict()
+        class_name = f"{my_model.__class__.__name__}"
+        dictionary = my_model.__dict__
+        expected_dict = {"__class__": class_name}
+        expected_dict.update(dictionary)
+        self.assertDictEqual(my_model_dict_repr, expected_dict)
+
+
     def test_to_dict_with_kwargs(self):
         """Test to dict method"""
         with self.assertRaises(AttributeError):
@@ -95,9 +136,13 @@ class TestBaseModel(unittest.TestCase):
         my_model.save()
         self.assertIsInstance(my_model.updated_at, datetime)
 
+    def test_update_at_created_at_assignemt(self):
+        """test update_at and created_at"""
+        with self.assertRaises(ValueError):
+            my_model = BaseModel(created_at = "12pm", updated_at = "12pm")
+            self.assertEqual(my_model.created_at, "12pm")
 
-
-
+    
 
 if __name__ == "__main__":
     unittest.main()
