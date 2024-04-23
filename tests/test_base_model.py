@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-console module
+test_base_model module
 """
 
 import unittest
@@ -57,7 +57,7 @@ class TestBaseModel(unittest.TestCase):
         ex_op = f"[{my_mo.__class__.__name__}] ({my_mo.id}) {my_mo.__dict__}"
         self.assertEqual(str(my_mo), ex_op)
 
-    def test_str_representation_with_arguments(self):
+    def test_str_representation_with_attribute(self):
         """Test str representation while providing arguments"""
         my_ml = BaseModel()
         my_ml.my_list = [1, 2, 4]
