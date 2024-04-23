@@ -2,7 +2,7 @@
 """
 console module
     1 - Class to test Amenity
-    2 - Class to test 
+    2 - Class to test
 """
 
 import unittest
@@ -17,13 +17,12 @@ from models.user import User
 from models.base_model import BaseModel
 
 
-
 class TestAmenity(unittest.TestCase):
     """Class to test Amenity class"""
     def test_Amenity(self):
         """Test if Amenity is a sub class of base_model"""
         self.assertTrue(issubclass(Amenity, BaseModel))
-    
+
     def test_Amenity_instance_and_attribute(self):
         """
         Test if Amenity can create an instance
@@ -38,7 +37,7 @@ class TestAmenity(unittest.TestCase):
         """
         Test if we can pass attribute to class
         """
-        my_Amenity = Amenity(name = "swimming Pool", quality = "Good")
+        my_Amenity = Amenity(name="swimming Pool", quality="Good")
         self.assertEqual(my_Amenity.name, "swimming Pool")
         self.assertEqual(my_Amenity.quality, "Good")
 
@@ -46,7 +45,7 @@ class TestAmenity(unittest.TestCase):
         """
         Test id attriubte
         """
-        my_new_Amenity= Amenity()
+        my_new_Amenity = Amenity()
         uuid_obj = uuid.UUID(my_new_Amenity.id)
         self.assertTrue(uuid.UUID(my_new_Amenity.id, version=4))
         self.assertIsInstance(uuid_obj, uuid.UUID)
@@ -72,7 +71,7 @@ class TestAmenity(unittest.TestCase):
         Test case where kwarg is provided
         """
         with self.assertRaises(AttributeError):
-            my_A = Amenity(name = "Swimming pool")
+            my_A = Amenity(name="Swimming pool")
             ex_op = f"[{my_A.__class__.__name__}] ({my_A.id}) {my_A.__dict__}"
             self.assertEqual(str(my_A), ex_op)
 
@@ -92,7 +91,7 @@ class TestAmenity(unittest.TestCase):
         """
         my_A = Amenity()
         self.assertEqual(type(my_A.name), str)
-        
+
     def test_str_representation_with_attributes(self):
         """
         Test Amenity with attributes all type
@@ -138,12 +137,13 @@ class TestAmenity(unittest.TestCase):
             my_review = Amenity()
             my_review.calculate()
 
+
 class TestCity(unittest.TestCase):
     """Class to test city class"""
     def test_City(self):
         """Test if City is a sub class of base_model"""
         self.assertTrue(issubclass(City, BaseModel))
-    
+
     def test_city_instance_and_attribute(self):
         """
         Test if City can create an instance
@@ -160,7 +160,7 @@ class TestCity(unittest.TestCase):
         """
         Test if we can pass attribute to class
         """
-        my_city = City(name = "Kuala Lumpur", state_id = "kl234")
+        my_city = City(name="Kuala Lumpur", state_id="kl234")
         self.assertEqual(my_city.name, "Kuala Lumpur")
         self.assertEqual(my_city.state_id, "kl234")
 
@@ -168,7 +168,7 @@ class TestCity(unittest.TestCase):
         """
         Test id attriubte
         """
-        my_new_City= City()
+        my_new_City = City()
         uuid_obj = uuid.UUID(my_new_City.id)
         self.assertTrue(uuid.UUID(my_new_City.id, version=4))
         self.assertIsInstance(uuid_obj, uuid.UUID)
@@ -185,28 +185,28 @@ class TestCity(unittest.TestCase):
         """
         Test string representation for Amenity
         """
-        my_city = City()
-        ex_op = f"[{my_city.__class__.__name__}] ({my_city.id}) {my_city.__dict__}"
-        self.assertEqual(str(my_city), ex_op)
+        city = City()
+        ex_op = f"[{city.__class__.__name__}] ({city.id}) {city.__dict__}"
+        self.assertEqual(str(city), ex_op)
 
     def test_str_rpr_with_attribute(self):
         """
         Test case where kwarg is provided
         """
         with self.assertRaises(AttributeError):
-            my_city = City(name = "New York")
-            ex_op = f"[{my_city.__class__.__name__}] ({my_city.id}) {my_city.__dict__}"
-            self.assertEqual(str(my_city), ex_op)
+            city = City(name="New York")
+            ex_op = f"[{city.__class__.__name__}] ({city.id}) {city.__dict__}"
+            self.assertEqual(str(city), ex_op)
 
     def test_str_rpr_with_attribute_not_kwarg(self):
         """
         Test str rpr case where attriube is assign
         not using kwarg
         """
-        my_city = City()
-        my_city.name = "Kissidougou"
-        ex_op = f"[{my_city.__class__.__name__}] ({my_city.id}) {my_city.__dict__}"
-        self.assertEqual(str(my_city), ex_op)
+        city = City()
+        city.name = "Kissidougou"
+        ex_op = f"[{city.__class__.__name__}] ({city.id}) {city.__dict__}"
+        self.assertEqual(str(city), ex_op)
 
     def test_city_attribute_name(self):
         """
@@ -215,7 +215,7 @@ class TestCity(unittest.TestCase):
         my_city = City()
         self.assertEqual(type(my_city.name), str)
         self.assertEqual(type(my_city.state_id), str)
-        
+
     def test_str_representation_with_attributes(self):
         """
         Test City with attributes all type
@@ -255,12 +255,13 @@ class TestCity(unittest.TestCase):
             my_model = City(created_at="12pm", updated_at="12pm")
             self.assertEqual(my_model.created_at, "12pm")
 
+
 class TestPlace(unittest.TestCase):
     """Class to test Place class"""
     def test_Place(self):
         """Test if place is a sub class of base_model"""
         self.assertTrue(issubclass(Place, BaseModel))
-    
+
     def test_place_instance_and_attribute(self):
         """
         Test if City can create an instance
@@ -297,12 +298,11 @@ class TestPlace(unittest.TestCase):
             my_review = City()
             my_review.calculate()
 
-
     def test_kwargs(self):
         """
         Test if we can pass attribute to class
         """
-        my_place = Place(name = "Kuala Lumpur", city_id = "kl234")
+        my_place = Place(name="Kuala Lumpur", city_id="kl234")
         self.assertEqual(my_place.name, "Kuala Lumpur")
         self.assertEqual(my_place.city_id, "kl234")
 
@@ -310,7 +310,7 @@ class TestPlace(unittest.TestCase):
         """
         Test id attriubte
         """
-        my_new_place= Place()
+        my_new_place = Place()
         uuid_obj = uuid.UUID(my_new_place.id)
         self.assertTrue(uuid.UUID(my_new_place.id, version=4))
         self.assertIsInstance(uuid_obj, uuid.UUID)
@@ -327,28 +327,28 @@ class TestPlace(unittest.TestCase):
         """
         Test string representation for place
         """
-        my_place = Place()
-        ex_op = f"[{my_place.__class__.__name__}] ({my_place.id}) {my_place.__dict__}"
-        self.assertEqual(str(my_place), ex_op)
+        place = Place()
+        ex_op = f"[{place.__class__.__name__}] ({place.id}) {place.__dict__}"
+        self.assertEqual(str(place), ex_op)
 
     def test_str_rpr_with_attribute(self):
         """
         Test case where kwarg is provided
         """
         with self.assertRaises(AttributeError):
-            my_place = Place(name = "New York")
-            ex_op = f"[{my_place.__class__.__name__}] ({my_place.id}) {my_place.__dict__}"
-            self.assertEqual(str(my_place), ex_op)
+            place = Place(name="New York")
+            rpr = f"[{place.__class__.__name__}] ({place.id}) {place.__dict__}"
+            self.assertEqual(str(place), rpr)
 
     def test_str_rpr_with_attribute_not_kwarg(self):
         """
         Test str rpr case where attriube is assign
         not using kwarg
         """
-        my_place = Place()
-        my_place.name = "Kissidougou"
-        ex_op = f"[{my_place.__class__.__name__}] ({my_place.id}) {my_place.__dict__}"
-        self.assertEqual(str(my_place), ex_op)
+        place = Place()
+        place.name = "Kissidougou"
+        ex_op = f"[{place.__class__.__name__}] ({place.id}) {place.__dict__}"
+        self.assertEqual(str(place), ex_op)
 
     def test_city_attribute_name(self):
         """
@@ -367,16 +367,15 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(my_place.longitude), float)
         self.assertEqual(type(my_place.amenity_ids), list)
 
-        
     def test_str_representation_with_attributes(self):
         """
         Test place with attributes all type
         """
-        my_place = Place()
-        my_place.my_list = [1, 2, 4]
-        my_place.dict = {"A": 2, "B": 5, "C": 6}
-        output = f"[{my_place.__class__.__name__}] ({my_place.id}) {my_place.__dict__}"
-        self.assertEqual(str(my_place), output)
+        my_p = Place()
+        my_p.my_list = [1, 2, 4]
+        my_p.dict = {"A": 2, "B": 5, "C": 6}
+        output = f"[{my_p.__class__.__name__}] ({my_p.id}) {my_p.__dict__}"
+        self.assertEqual(str(my_p), output)
 
     def test_to_dict_with_attriube(self):
         """
@@ -407,12 +406,13 @@ class TestPlace(unittest.TestCase):
             my_model = Place(created_at="12pm", updated_at="12pm")
             self.assertEqual(my_model.created_at, "12pm")
 
+
 class TestReview(unittest.TestCase):
     """Class to test review class"""
     def test_review(self):
         """Test if review is a sub class of base_model"""
         self.assertTrue(issubclass(Review, BaseModel))
-    
+
     def test_review_instance_and_attribute(self):
         """
         Test if review can create an instance
@@ -431,7 +431,7 @@ class TestReview(unittest.TestCase):
         """
         Test if we can pass attribute to class
         """
-        my_review = Review(place_name = "Kuala Lumpur", state_id = "kl234")
+        my_review = Review(place_name="Kuala Lumpur", state_id="kl234")
         self.assertEqual(my_review.place_name, "Kuala Lumpur")
         self.assertEqual(my_review.state_id, "kl234")
 
@@ -439,7 +439,7 @@ class TestReview(unittest.TestCase):
         """
         Test id attriubte
         """
-        my_new_review= Review()
+        my_new_review = Review()
         uuid_obj = uuid.UUID(my_new_review.id)
         self.assertTrue(uuid.UUID(my_new_review.id, version=4))
         self.assertIsInstance(uuid_obj, uuid.UUID)
@@ -456,28 +456,28 @@ class TestReview(unittest.TestCase):
         """
         Test string representation for review
         """
-        my_review = Review()
-        ex_op = f"[{my_review.__class__.__name__}] ({my_review.id}) {my_review.__dict__}"
-        self.assertEqual(str(my_review), ex_op)
+        my_r = Review()
+        ex_op = f"[{my_r.__class__.__name__}] ({my_r.id}) {my_r.__dict__}"
+        self.assertEqual(str(my_r), ex_op)
 
     def test_str_rpr_with_attribute(self):
         """
         Test case where kwarg is provided
         """
         with self.assertRaises(AttributeError):
-            my_review = Review(name = "New York")
-            ex_op = f"[{my_review.__class__.__name__}] ({my_review.id}) {my_review.__dict__}"
-            self.assertEqual(str(my_review), ex_op)
+            m_rw = Review(name="New York")
+            ex_op = f"[{m_rw.__class__.__name__}] ({m_rw.id}) {m_rw.__dict__}"
+            self.assertEqual(str(m_rw), ex_op)
 
     def test_str_rpr_with_attribute_not_kwarg(self):
         """
         Test str rpr case where attriube is assign
         not using kwarg
         """
-        my_review = Review()
-        my_review.text = "This is review"
-        ex_op = f"[{my_review.__class__.__name__}] ({my_review.id}) {my_review.__dict__}"
-        self.assertEqual(str(my_review), ex_op)
+        my_rw = Review()
+        my_rw.text = "This is review"
+        ex_op = f"[{my_rw.__class__.__name__}] ({my_rw.id}) {my_rw.__dict__}"
+        self.assertEqual(str(my_rw), ex_op)
 
     def test_review_attribute_name(self):
         """
@@ -487,7 +487,7 @@ class TestReview(unittest.TestCase):
         self.assertEqual(type(my_review.place_id), str)
         self.assertEqual(type(my_review.user_id), str)
         self.assertEqual(type(my_review.text), str)
-   
+
     def test_str_representation_with_attributes(self):
         """
         Test review with attributes all type
@@ -533,12 +533,13 @@ class TestReview(unittest.TestCase):
             my_review = Review()
             my_review.calculate()
 
+
 class Teststate(unittest.TestCase):
     """Class to test stae class"""
     def test_state(self):
         """Test if state is a sub class of base_model"""
         self.assertTrue(issubclass(State, BaseModel))
-    
+
     def test_state_instance_and_attribute(self):
         """
         Test if state can create an instance
@@ -553,14 +554,14 @@ class Teststate(unittest.TestCase):
         """
         Test if we can pass attribute to class
         """
-        my_state = State(name = "kedah")
+        my_state = State(name="kedah")
         self.assertEqual(my_state.name, "kedah")
 
     def test_id_attriubte(self):
         """
         Test id attriubte
         """
-        my_new_state= State()
+        my_new_state = State()
         uuid_obj = uuid.UUID(my_new_state.id)
         self.assertTrue(uuid.UUID(my_new_state.id, version=4))
         self.assertIsInstance(uuid_obj, uuid.UUID)
@@ -586,7 +587,7 @@ class Teststate(unittest.TestCase):
         Test case where kwarg is provided
         """
         with self.assertRaises(AttributeError):
-            my_A = State(name = "Swimming pool")
+            my_A = State(name="Swimming pool")
             ex_op = f"[{my_A.__class__.__name__}] ({my_A.id}) {my_A.__dict__}"
             self.assertEqual(str(my_A), ex_op)
 
@@ -606,7 +607,7 @@ class Teststate(unittest.TestCase):
         """
         my_A = State()
         self.assertEqual(type(my_A.name), str)
-        
+
     def test_str_representation_with_attributes(self):
         """
         Test state with attributes all type
@@ -652,12 +653,13 @@ class Teststate(unittest.TestCase):
             my_state = State()
             my_state.calculate()
 
+
 class TestUser(unittest.TestCase):
     """Class to test user class"""
     def test_Usr(self):
         """Test if Usr is a sub class of base_model"""
         self.assertTrue(issubclass(User, BaseModel))
-    
+
     def test_user_instance_and_attribute(self):
         """
         Test if user can create an instance
@@ -678,14 +680,14 @@ class TestUser(unittest.TestCase):
         """
         Test if we can pass attribute to class
         """
-        my_Amenity = User(name = "Antoine")
+        my_Amenity = User(name="Antoine")
         self.assertEqual(my_Amenity.name, "Antoine")
 
     def test_id_attriubte(self):
         """
         Test id attriubte
         """
-        my_new_user= User()
+        my_new_user = User()
         uuid_obj = uuid.UUID(my_new_user.id)
         self.assertTrue(uuid.UUID(my_new_user.id, version=4))
         self.assertIsInstance(uuid_obj, uuid.UUID)
@@ -734,7 +736,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(my_A.password), str)
         self.assertEqual(type(my_A.first_name), str)
         self.assertEqual(type(my_A.last_name), str)
-        
+
     def test_str_representation_with_attributes(self):
         """
         Test user with attributes all type
