@@ -98,6 +98,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertDictEqual(my_model_dict_repr, expected_dict)
 
     def test_to_dict_value_as_list(self):
+        """Test to dict with value as list"""
         my_model = BaseModel()
         my_model.my_list = [1, 2, 3]
         my_model.name = "First Model"
@@ -109,6 +110,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertDictEqual(my_model_dict_repr, expected_dict)
 
     def test_to_dict_value_as_dict(self):
+        """Test dict with value as dict"""
         my_model = BaseModel()
         my_model.my_dict = {"a": 1, "b": 2, "c": 3}
         my_model.name = "First Model"
@@ -120,6 +122,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertDictEqual(my_model_dict_repr, expected_dict)
 
     def test_to_dict_value_as_tuple(self):
+        """Test dict with value as tuple"""
         my_model = BaseModel()
         my_model.my_tuple = (1, 2, 4)
         my_model.name = "First Model"
