@@ -8,6 +8,7 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """
     Base model class
@@ -17,7 +18,7 @@ class BaseModel:
             updated_at (date): current datetime when an instance is created
                      and it will be updated every time you change your object
     """
-    def __init__(self, *args, **kwargs): 
+    def __init__(self, *args, **kwargs):
         """
         Constructor
 
@@ -29,12 +30,12 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
-                    
+                    time_format = "%Y-%m-%dT%H:%M:%S.%f"
                     if key == "created_at":
-                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        value = datetime.strptime(value, time_format)
                         setattr(self, key, value)
                     elif key == "updated_at":
-                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        value = datetime.strptime(value, time_format)
                         setattr(self, key, value)
                     setattr(self, key, value)
         else:
@@ -47,23 +48,25 @@ class BaseModel:
         """
         Returns the string representation of the object
         """
-        object_class = type(self)
-        return "[{}] ({}) {}".format(object_class.__name__, self.id, self.__dict__)
-        
-    
+        obj_clas = type(self)
+        return "[{}] ({}) {}".format(obj_clas.__name__, self.id, self.__dict__)
+
     def save(self):
         """
-        updates the public instance attribute updated_at with the current datetime
+        updates the public instance attribute updated_at
+        with the current datetime
         """
         current_time = datetime.now()
         self.updated_at = current_time
         models.storage.save()
-    
+
     def to_dict(self):
         """
         returns a dictionary containing all keys/values of dict of the instance
         """
-        if isinstance(self.created_at, datetime) and isinstance(self.updated_at, datetime):
+        a = self.created_at
+        b = self.updated_at
+        if isinstance(a, datetime) and isinstance(b, datetime):
             self.created_at = self.created_at.isoformat()
             self.updated_at = self.updated_at.isoformat()
         diction = self.__dict__

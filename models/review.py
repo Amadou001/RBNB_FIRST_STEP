@@ -6,7 +6,9 @@ review module
 
 from .base_model import BaseModel
 
+
 class Review(BaseModel):
-    place_id : str = ""
-    user_id : str = ""
-    text : str = ""
+    """Review class"""
+    place_id: str = ""
+    user_id: str = ""
+    text: str = ""
