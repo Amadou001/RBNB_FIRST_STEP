@@ -38,7 +38,6 @@ class BNBCommand(cmd.Cmd):
         if args:
             arguments = args.split()
             class_name = arguments[0]
-            is_valid_class = 
             if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
                 my_model = globals()[arguments[0]]()
                 my_model.save()
