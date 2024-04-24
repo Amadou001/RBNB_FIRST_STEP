@@ -155,6 +155,3 @@ class TestBaseModel(unittest.TestCase):
             my_model = BaseModel(created_at="12pm", updated_at="12pm")
             self.assertEqual(my_model.created_at, "12pm")
 
-
-if __name__ == "__main__":
-    unittest.main()
