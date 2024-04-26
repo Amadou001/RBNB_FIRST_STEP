@@ -38,7 +38,9 @@ class BNBCommand(cmd.Cmd):
         if args:
             arguments = args.split()
             class_name = arguments[0]
-            if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
+            if hasattr(globals().get(class_name), '__bases__') \
+               and issubclass(globals().get(class_name), BaseModel):
+
                 my_model = globals()[arguments[0]]()
                 my_model.save()
                 print(my_model.id)
@@ -150,10 +152,8 @@ class BNBCommand(cmd.Cmd):
                     my_id_dict[class_name] = [obj_id]
 
                 if class_name == arguments[0] and obj_id == arguments[1]:
-                    #print(eval(arguments[3].strip('"')))
                     try:
                         if type(eval(arguments[3].strip('"'))) in [int, float]:
-                            #print(eval(arguments[3].strip('"')))
                             setattr(all_objects[obj_key], arguments[2], eval(arguments[3].strip('"')))
                     except Exception:
                         setattr(all_objects[obj_key], arguments[2], arguments[3].strip('"'))
@@ -232,8 +232,8 @@ class BNBCommand(cmd.Cmd):
                     pass
 
             elif command[:6] == "update":
-                first_split = line.split(",")
-                if len(first_split) > 2:
+                first_split = line.split("{", 1)
+                if len(first_split) == 2:
                     split_str = line.split(',', 1)
                     obj_id = split_str[0].split('"')[1]
                     dictionary = split_str[1].rsplit(')', 1)[0]
@@ -261,8 +261,8 @@ class BNBCommand(cmd.Cmd):
                     except:
                         pass
 
-            #else:
-                #print("** Not implemented yet **")
+            else:
+                print("** Not implemented yet **")
         else:
             print("** Class name does not exist **")
 
