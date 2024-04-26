@@ -202,7 +202,12 @@ class BNBCommand(cmd.Cmd):
             print(list_object)
 
     def default(self, line):
-        class_name, command = line.split(".")
+        try:
+            class_name, command = line.split(".")
+        except:
+            print("**Not implemented**")
+            return
+
         if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
             if command == "all()":
                 self.onecmd(f'all {class_name}')
@@ -231,27 +236,36 @@ class BNBCommand(cmd.Cmd):
                     pass
             
             elif command[:6] == "update":
-                command_split = command.split(",")
+                first_split = line.split(",")
+                if len(first_split) > 2:
+                    split_str = line.split(',', 1)
+                    obj_id = split_str[0].split('"')[1]
+                    dictionary = split_str[1].rsplit(')', 1)[0]
+                    dictionary = eval(dictionary)
+                    attr_names = list(dictionary.keys())
+                    for i in range(len(attr_names)):
+                        self.onecmd(f'update {class_name} {obj_id} {attr_names[i]} {dictionary[attr_names[i]]}' )
 
-                try:
-                    list_split = []
-                    list_split = command.split('"')
-                    if len(list_split) == 7:
-                        garbage1, obj_id, garbage2, attr_name, garbage3, attr_value, garbage4 = command.split('"')
-                        garbage5, garbage, garbage6 = command.split(", ")
-                        attr_value = garbage6.split(")")[0]
-                        self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
-                    else:
-                        garbage1, obj_id, garbage2, attr_name, garbage3 = command.split('"')
-                        garbage5, garbage, garbage6 = command.split(", ")
-                        attr_value = garbage6.split(")")[0]
-                        self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
+                else:
+                    try:
+                        list_split = []
+                        list_split = command.split('"')
+                        if len(list_split) == 7:
+                            garbage1, obj_id, garbage2, attr_name, garbage3, attr_value, garbage4 = command.split('"')
+                            garbage5, garbage, garbage6 = command.split(", ")
+                            attr_value = garbage6.split(")")[0]
+                            self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
+                        else:
+                            garbage1, obj_id, garbage2, attr_name, garbage3 = command.split('"')
+                            garbage5, garbage, garbage6 = command.split(", ")
+                            attr_value = garbage6.split(")")[0]
+                            self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
                 
-                except:
-                    pass
+                    except:
+                        pass
 
-            else:
-                print("** Not implemented yet **")
+            #else:
+                #print("** Not implemented yet **")
         else:
             print("** Class name does not exist **")
 
