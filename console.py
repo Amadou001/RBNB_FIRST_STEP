@@ -15,7 +15,9 @@ from models.review import Review
 from models import storage
 import os
 
+
 class BNBCommand(cmd.Cmd):
+    """Console class"""
     prompt = "(hbnb) "
 
     def do_quit(self, line):
@@ -39,7 +41,7 @@ class BNBCommand(cmd.Cmd):
             if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
                 my_model = globals()[arguments[0]]()
                 my_model.save()
-                print(my_model.id)           
+                print(my_model.id)
             else:
                 print("** class doesn't exist")
         else:
@@ -57,12 +59,11 @@ class BNBCommand(cmd.Cmd):
             print("** instance id missing ** ")
             return
 
-        
         my_id_dict = {}
-                
+
         for obj_key in all_objects.keys():
             class_name, obj_id = obj_key.split('.')
-            
+
             if class_name in my_id_dict.keys():
                 my_id_dict[class_name].append(obj_id)
             else:
@@ -71,17 +72,15 @@ class BNBCommand(cmd.Cmd):
             if class_name == arguments[0] and obj_id == arguments[1]:
                 print(all_objects[obj_key])
                 return
-        
+
         if arguments[0] not in my_id_dict.keys():
             print("** class doesn't exist **")
             return
-        
-        
+
         if arguments[1] not in my_id_dict[arguments[0]]:
             print("** no instance found **")
             return
 
-        
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
         all_objects = storage.all()
@@ -95,31 +94,29 @@ class BNBCommand(cmd.Cmd):
             return
 
         my_id_dict = {}
-        
-        
+
         try:
             for obj_key in all_objects.keys():
                 class_name, obj_id = obj_key.split('.')
-                
+
                 if class_name in my_id_dict.keys():
                     my_id_dict[class_name].append(obj_id)
                 else:
                     my_id_dict[class_name] = [obj_id]
-            
+
                 if class_name == arguments[0] and obj_id == arguments[1]:
                     del all_objects[obj_key]
                 storage.save()
 
         except RuntimeError:
             return
-        
+
         if arguments[0] not in my_id_dict.keys():
             print("** class doesn't exist **")
 
         if arguments[1] not in my_id_dict[arguments[0]]:
             print("** no instance found **")
             return
-
 
     def do_update(self, args):
         """update an instance base class name and id"""
@@ -136,29 +133,29 @@ class BNBCommand(cmd.Cmd):
         if len(arguments) < 3:
             print("** attribute name missing ** ")
             return
-    
+
         if len(arguments) < 4:
             print("** value missing **")
             return
 
         my_id_dict = {}
-        
+
         try:
             for obj_key in all_objects.keys():
                 class_name, obj_id = obj_key.split('.')
-                
+
                 if class_name in my_id_dict.keys():
                     my_id_dict[class_name].append(obj_id)
                 else:
                     my_id_dict[class_name] = [obj_id]
-            
+
                 if class_name == arguments[0] and obj_id == arguments[1]:
                     #print(eval(arguments[3].strip('"')))
                     try:
                         if type(eval(arguments[3].strip('"'))) in [int, float]:
                             #print(eval(arguments[3].strip('"')))
                             setattr(all_objects[obj_key], arguments[2], eval(arguments[3].strip('"')))
-                    except:
+                    except Exception:
                         setattr(all_objects[obj_key], arguments[2], arguments[3].strip('"'))
                     storage.save()
         except RuntimeError:
@@ -170,7 +167,6 @@ class BNBCommand(cmd.Cmd):
         if arguments[1] not in my_id_dict[arguments[0]]:
             print("** no instance found **")
             return
-            
 
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
@@ -186,14 +182,14 @@ class BNBCommand(cmd.Cmd):
             if arguments[0] not in all_class_name:
                 print("** class doesn't exist **")
                 return
-            
+
             list_object = []
             for obj_id in all_obj.keys():
                 cls_name, o_id = obj_id.split(".")
                 if arguments[0] == cls_name:
                     list_object.append(str(all_obj[obj_id]))
             print(list_object)
-        
+
         else:
             list_object = []
             for obj_id in all_obj.keys():
@@ -224,7 +220,7 @@ class BNBCommand(cmd.Cmd):
                 try:
                     garbage1, ob_id, garbage2 = line.split('"')
                     self.onecmd(f'show {class_name} {ob_id}')
-                except:
+                except Exception:
                     pass
 
             elif command[:7] == "destroy":
@@ -232,9 +228,9 @@ class BNBCommand(cmd.Cmd):
                 try:
                     garbage1, ob_id, garbage2 = line.split('"')
                     self.onecmd(f'destroy {class_name} {ob_id}')
-                except:
+                except Exception:
                     pass
-            
+
             elif command[:6] == "update":
                 first_split = line.split(",")
                 if len(first_split) > 2:
@@ -245,6 +241,7 @@ class BNBCommand(cmd.Cmd):
                     attr_names = list(dictionary.keys())
                     for i in range(len(attr_names)):
                         self.onecmd(f'update {class_name} {obj_id} {attr_names[i]} {dictionary[attr_names[i]]}' )
+
 
                 else:
                     try:
@@ -268,7 +265,6 @@ class BNBCommand(cmd.Cmd):
                 #print("** Not implemented yet **")
         else:
             print("** Class name does not exist **")
-
 
 
 if __name__ == '__main__':
