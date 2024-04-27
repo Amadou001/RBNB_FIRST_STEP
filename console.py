@@ -154,9 +154,13 @@ class BNBCommand(cmd.Cmd):
                 if class_name == arguments[0] and obj_id == arguments[1]:
                     try:
                         if type(eval(arguments[3].strip('"'))) in [int, float]:
-                            setattr(all_objects[obj_key], arguments[2], eval(arguments[3].strip('"')))
+                            setattr(all_objects[obj_key], arguments[2],
+                                    eval(arguments[3].strip('"')))
+
                     except Exception:
-                        setattr(all_objects[obj_key], arguments[2], arguments[3].strip('"'))
+                        setattr(all_objects[obj_key], arguments[2],
+                                arguments[3].strip('"'))
+
                     storage.save()
         except RuntimeError:
             return
@@ -169,7 +173,9 @@ class BNBCommand(cmd.Cmd):
             return
 
     def do_all(self, args):
-        """Prints all string representation of all instances based or not on the class name"""
+        """Prints all string representation of all i
+        nstances based or not on the class name"""
+
         all_obj = storage.all()
         all_class_name = []
 
@@ -200,11 +206,13 @@ class BNBCommand(cmd.Cmd):
     def default(self, line):
         try:
             class_name, command = line.split(".")
-        except:
+        except Exception:
             print("**Not implemented**")
             return
 
-        if hasattr(globals().get(class_name), '__bases__') and issubclass(globals().get(class_name), BaseModel):
+        if hasattr(globals().get(class_name), '__bases__') \
+           and issubclass(globals().get(class_name), BaseModel):
+
             if command == "all()":
                 self.onecmd(f'all {class_name}')
             elif command == "count()":
@@ -233,6 +241,7 @@ class BNBCommand(cmd.Cmd):
 
             elif command[:6] == "update":
                 first_split = line.split("{", 1)
+
                 if len(first_split) == 2:
                     split_str = line.split(',', 1)
                     obj_id = split_str[0].split('"')[1]
@@ -240,25 +249,29 @@ class BNBCommand(cmd.Cmd):
                     dictionary = eval(dictionary)
                     attr_names = list(dictionary.keys())
                     for i in range(len(attr_names)):
-                        self.onecmd(f'update {class_name} {obj_id} {attr_names[i]} {dictionary[attr_names[i]]}' )
-
+                        self.onecmd(f'update {class_name} {obj_id} \
+                            {attr_names[i]} {dictionary[attr_names[i]]}')
 
                 else:
                     try:
                         list_split = []
                         list_split = command.split('"')
                         if len(list_split) == 7:
-                            garbage1, obj_id, garbage2, attr_name, garbage3, attr_value, garbage4 = command.split('"')
+                            garbage1, obj_id, garbage2, attr_name, garbage3, \
+                                attr_value, garbage4 = command.split('"')
                             garbage5, garbage, garbage6 = command.split(", ")
                             attr_value = garbage6.split(")")[0]
-                            self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
+                            self.onecmd("update {} {} {} {}".format(class_name,
+                                        obj_id, attr_name, attr_value))
                         else:
-                            garbage1, obj_id, garbage2, attr_name, garbage3 = command.split('"')
+                            garbage1, obj_id, garbage2, attr_name, \
+                                garbage3 = command.split('"')
                             garbage5, garbage, garbage6 = command.split(", ")
                             attr_value = garbage6.split(")")[0]
-                            self.onecmd("update {} {} {} {}".format(class_name, obj_id, attr_name, attr_value))
-                
-                    except:
+                            self.onecmd("update {} {} {} {}".format(class_name,
+                                        obj_id, attr_name, attr_value))
+
+                    except Exception:
                         pass
 
             else:
